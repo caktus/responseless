@@ -1,0 +1,64 @@
+.setup-responseless(@max-mobile: 600px, @min-desktop: 1000px, @max-page-width: 1200px) {
+  @scroll-bar-width-max: 20px;
+  @responsive-shim-step-count: 30;
+
+  @responsive-small-max: @max-mobile;
+  @responsive-shim-min: (@max-mobile + 1px);
+  @responsive-shim-max: @min-desktop;
+  @responsive-shim-step: (@responsive-shim-max - @responsive-shim-min) / @responsive-shim-step-count;
+
+  .responsive(@defaults, @small, @full) {
+    @defaults();
+
+    @media (max-width: @responsive-small-max) {
+      @small();
+    }
+    @media (min-width: @responsive-shim-min) {
+      @full();
+    }
+  }
+  .responsive(@defaults, @small) {
+    .responsive(@defaults, @small, {});
+  }
+  .small(@rules) {
+    @media (max-width: @responsive-small-max) {
+      @rules();
+    }
+  }
+  .shim(@rules) {
+    @media (min-width: @responsive-shim-min) and (max-width: @responsive-shim-max) {
+      @rules();
+    }
+  }
+  .full(@rules) {
+    @media (min-width: @responsive-shim-min) {
+      @rules();
+    }
+  }
+  .not-full(@rules) {
+    @media (max-width: @responsive-shim-max) {
+      @rules();
+    }
+  }
+
+  .shim-interpolate-value(@property, @start-value, @end-value) {
+    @steps-remaining: (@interpolation-max - @responsive-shim-step-max) / @responsive-shim-step;
+    @steps-so-far: (@responsive-shim-step-min - @interpolation-min) / @responsive-shim-step;
+    @ratio: @steps-so-far / (@steps-so-far + @steps-remaining);
+
+    @{property}: @start-value + (@end-value - @start-value) * @ratio;
+  }
+
+  .header-shim-step(@responsive-shim-step-min, @responsive-shim-step-max, @property, @start-value, @end-value) when (@responsive-shim-step-min >= @interpolation-min) {
+    @media (min-width: @responsive-shim-step-min) and (max-width: @responsive-shim-step-max) {
+      .shim-interpolate-value(@property, @start-value, @end-value);
+    }
+    .header-shim-step((@responsive-shim-step-min - @responsive-shim-step), (@responsive-shim-step-max - @responsive-shim-step), @property, @start-value, @end-value);
+  }
+
+  // Use this to define a range of values for a property which will be interpolated between the
+  // 'small' and 'full' page widths.
+  .shim-interpolate(@property, @start-value, @end-value, @interpolation-min: @responsive-shim-min, @interpolation-max: @responsive-shim-max) {
+    .header-shim-step(@interpolation-max - @responsive-shim-step, @interpolation-max, @property, @start-value, @end-value);
+  }
+}

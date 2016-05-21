@@ -1,0 +1,24 @@
+{
+  "name": "@caktus/responseless",
+  "version": "0.2.0",
+  "description": "A set of less mixins for easily dealing with responsive layouts consistently",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/caktus/responseless.git"
+  },
+  "keywords": [
+    "less",
+    "stylesheet",
+    "css",
+    "flexbox"
+  ],
+  "author": "Calvin Spealman <calvin@caktusgroup.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/caktus/responseless/issues"
+  },
+  "homepage": "https://github.com/caktus/responseless#readme"
+}
